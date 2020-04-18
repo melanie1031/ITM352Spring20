@@ -1,0 +1,201 @@
+<script>
+    
+
+   var product_quantities = [2, 1, 1, 3, 12];
+    console.log("The length of the array is " + product_quantities.length);
+    //product_quantities.push("new element");
+    //console.log(product_quantities[5]);
+    //product_quantities.pop();
+    //console.log(product_quantities);
+
+    
+
+    //Product1 
+
+    var item1 = 'Gillette Sensor 3 Razor';
+    var quantity1 = 2;
+    var price1 = 1.23;
+
+
+    /* Exercuse 1 a. */
+    product1 = {
+        'item': 'Gilette Sensoe 3 Razor',
+        'quantity': product_quantities[0], // 2
+        'price': 1.23,
+    };
+
+
+    //product1['SKU#'] = 1234;
+    //delete product1['SKU#']
+
+    //Product2
+    var item2 = 'Barbasol Shaving Cream';
+    var item2_quantity = product_quantities[1]; //1
+    var item2_price = 2.64;
+
+
+
+    //Product3
+    var item3 = 'Nautica Cologne';
+    var item3_quantity = product_quantities[2]; //1
+    var item3_price = 6.17;
+
+
+    //Product4
+    var item4 = 'Rubbing Alcohol';
+    var item4_quantity = product_quantities[3];
+    var item4_price = 0.98;
+
+
+    //Product5
+    var item5 = 'Colgate Classic Toothbrush';
+    var item5_quantity = product_quantities[4]; //12
+    var item5_price = 1.89;
+
+    //E_P
+    //product1.quantity = 0;
+    //changed extended_price1 to an js object 
+    var extended_price1 = {price: product1.quantity * price1};//2.46;
+    var extended_price2 = 2.64;
+    var extended_price3 = item3_quantity * item3_price; //6.17
+    var extended_price4 = item4_quantity * item4_price; //2.94
+    var extended_price5 = item5_quantity * item5_price; //22.68
+
+    //changed extended_price1 to extended_price1.price
+    var products_extended_prices_sum = extended_price1.price + extended_price2 + extended_price3 + extended_price4 + extended_price5;
+    console.log(products_extended_prices_sum);
+
+    var tax = (5.75 * 0.01);
+    var sale_tax = products_extended_prices_sum * tax;
+    console.log(sale_tax);
+
+    var total_subtotal = products_extended_prices_sum + sale_tax;
+    console.log(total_subtotal);
+</script>
+
+<script>
+    document.write(`
+        <table style="border: 1px solid black;text-align: center;">
+            <tr style="border: 1px solid black;">
+                <th style="border: 1px solid black;">
+                    Product #</th>
+                <th>
+                    Quantity
+                </th>
+             </tr>
+    `);
+        for(i = 0; i < product_quantities.length; i++){
+            document.write(`
+                <tr style="border: 1px solid black;">
+                    <td style="border: 1px solid black;">
+                        ${i+1}
+                    </td>
+                    <td>
+                        ${product_quantities[i]}
+                    </td>
+                </tr>
+        `);
+    }
+    document.write(`</table>`);
+</script>
+
+
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-spacing:0;}
+    .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+    .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+    .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+    .tg .tg-0lax{text-align:left;vertical-align:top}
+    </style>
+    <table class="tg">
+      <tr>
+        <td class="tg-0pky">x</td>
+        <td class="tg-0lax">o</td>
+        <td class="tg-0pky">x</td>
+      </tr>
+      <tr>
+        <td class="tg-0lax">o</td>
+        <td class="tg-0lax">x</td>
+        <td class="tg-0lax">o</td>
+      </tr>
+      <tr>
+        <td class="tg-0lax">x</td>
+        <td class="tg-0lax">o</td>
+        <td class="tg-0lax">o</td>
+      </tr>
+    </table>
+
+
+<table border = "2" id="invoiceTable">
+    <tbody>
+        <tr>
+            <td style="text-align: center;" width="43%">Item</td>
+            <td style="text-align: center;" width="11%">quantity</td>
+            <td style="text-align: center;" width="13%">price</td>
+            <td style="text-align: center;" width="54%">extended price</td>
+        </tr>
+
+        <script>
+            var row = invoiceTable.insertRow();
+            row.insertCell().innerHTML = item1;
+            row.insertCell().innerHTML = product1.quantity;
+            row.insertCell().innerHTML = price1.toFixed(2);
+            row.insertCell().innerHTML = extended_price1.price;
+
+            var row2 = invoiceTable.insertRow();
+            row2.insertCell().innerHTML = item2;
+            row2.insertCell().innerHTML = item2_quantity;
+            row2.insertCell().innerHTML = item2_price.toFixed(2);
+            row2.insertCell().innerHTML = extended_price2;
+
+            var row3 = invoiceTable.insertRow();
+            row3.insertCell().innerHTML = item3;
+            row3.insertCell().innerHTML = item3_quantity;
+            row3.insertCell().innerHTML = item3_price.toFixed(2);
+            row3.insertCell().innerHTML = extended_price3;
+
+            var row4 = invoiceTable.insertRow();
+            row4.insertCell().innerHTML = item4;
+            row4.insertCell().innerHTML = item4_quantity;
+            row4.insertCell().innerHTML = item4_price.toFixed(2);
+            row4.insertCell().innerHTML = extended_price4;
+
+            var row5 = invoiceTable.insertRow();
+            row5.insertCell().innerHTML = item5;
+            row5.insertCell().innerHTML = item5_quantity;
+            row5.insertCell().innerHTML = item5_price.toFixed(2);
+            row5.insertCell().innerHTML = extended_price5;
+
+        </script>
+
+        <tr>
+            <td style="text-align: center;" colspan="3" width="67%">Sub-total</td>
+            <td id="subtotal_cell"</td>
+
+            <script>
+                subtotal_cell.innerHTML = "$" + products_extended_prices_sum.toFixed(2);
+            </script>
+        </tr>
+
+        <tr>
+            <td style="text-align: center;" colspan="3" width="67%"><span style = "font-family: arial;">Tax @ 5.75%</span></td>
+            <td id = "tax_cell"</td></td>
+
+            <script>
+                tax_cell.innerHTML = "$" + sale_tax.toFixed(2);
+            </script>
+        </tr>
+
+        <tr>
+            <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
+            <td id="total_cell"</td></td>
+
+            <script>
+                total_cell.innerHTML = "$" + total_subtotal.toFixed(2);
+            </script>
+
+        </tr>
+        
+    </tbody>
+</table>
+
