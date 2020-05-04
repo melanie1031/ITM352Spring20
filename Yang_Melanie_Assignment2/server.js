@@ -1,6 +1,6 @@
 //Creating a server via express//
 
-var data = require('./public/product_data.js.js'); //get the data from product_data.js
+var data = require('./public/product_data.js'); //get the data from product_data.js
 var products = data.products;
 
 // So it'll load querystring// 
@@ -32,10 +32,10 @@ app.all('*', function (request, response, next) {
 app.use(myParser.urlencoded({ extended: true })); //get data in the body//
 //to process the response from what is typed in the form//
 
-// login stuff starts here// 
-app.post("./public/login.html", function (req, res) {
+// login stuff starts here , add more comments and reference// 
+app.post("/process_login", function (req, res) {
     var LogError = [];
-    console.log(req.body);
+    console.log(req.query);
     the_username = req.body.username.toLowerCase();
     if (typeof users_reg_data[the_username] != 'undefined') {
         //Asking object if it has matching username, if it doesnt itll be undefined.
@@ -43,14 +43,14 @@ app.post("./public/login.html", function (req, res) {
             req.query.username = the_username;
             console.log(users_reg_data[req.query.username].name);
             req.query.name = users_reg_data[req.query.username].name
-            res.redirect('./public/invoice.html?' + querystring.stringify(req.query));
+            res.redirect('/invoice.html?' + queryString.stringify(req.query));
             return;
             //Redirect them to invoice here if they logged in correctly//
         } else {
             LogError.push = ('Invalid Password');
       console.log(LogError);
       req.query.username= the_username;
-      req.query.password= req.body.password;
+      req.query.name= users_reg_data[the_username].name;
       req.query.LogError=LogError.join(';');
         }
     } else {
@@ -59,10 +59,10 @@ app.post("./public/login.html", function (req, res) {
         req.query.username= the_username;
         req.query.LogError=LogError.join(';');
     }
-    res.redirect('./public/login.html?' + querystring.stringify(req.query));
+    res.redirect('./login.html?' + queryString.stringify(req.query));
 });
 
-app.post("./public/register.html", function (req, res) {
+app.post("/process_register", function (req, res) {
     qstr = req.body
     console.log(qstr);
     var errors = [];
@@ -109,7 +109,7 @@ app.post("./public/register.html", function (req, res) {
        console.log('none');
        req.query.username = reguser;
        req.query.name = req.body.name;
-       res.redirect('./public/invoice.html?' + querystring.stringify(req.query))
+       res.redirect('/invoice.html?' + queryString.stringify(req.query))
     }
     if (errors.length > 0) {
         console.log(errors)
@@ -120,7 +120,7 @@ app.post("./public/register.html", function (req, res) {
         req.query.email = req.body.email;
 
         req.query.errors = errors.join(';');
-        res.redirect('register.html?' + querystring.stringify(req.query))
+        res.redirect('register.html?' + queryString.stringify(req.query))
     }
 });
 
@@ -128,7 +128,7 @@ app.post("./public/register.html", function (req, res) {
 
 app.post("/process_purchase", function (request, response) {
     let POST = request.body; // data would be packaged in the body//
-
+  console.log(POST);
     if (typeof POST['submitPurchase'] != 'undefined') {
         var hasvalidquantities=true; // creating a varibale assuming that it'll be true// 
         var hasquantities=false
@@ -141,7 +141,7 @@ app.post("/process_purchase", function (request, response) {
         // if all quantities are valid, generate the invoice// 
         const stringified = queryString.stringify(POST);
         if (hasvalidquantities && hasquantities) {
-            response.redirect("./Invoice.html?"+stringified); // using the invoice.html and all the data that is input//
+            response.redirect("./login.html?"+stringified); // using the login.html and all the data that is input//
         }  
         else {response.send('Enter a valid quantity!')} 
     }

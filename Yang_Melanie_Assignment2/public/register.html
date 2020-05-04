@@ -21,7 +21,7 @@
 
 <body>
     <div>
-        <form method="POST" action="" name="Register">
+        <form method="POST" action="process_register" name="Register">
             <input type="text" name="fullname" size="40" pattern="[a-zA-Z]+[ ]+[a-zA-Z]+"
                 placeholder="Enter First & Last Name"><br />
             <input type="text" name="username" size="40" pattern=".[a-z0-9]{3,10}" required
@@ -37,7 +37,7 @@
             <input type="submit" value="Register" id="submit">
         </form>
         <script>
-            Register.action = "./register.html" + document.location.search;
+            Register.action += document.location.search;
         </script>
     </div>
 </body>

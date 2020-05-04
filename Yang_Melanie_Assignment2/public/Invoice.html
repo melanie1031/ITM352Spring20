@@ -1,7 +1,7 @@
 <script 
 src="./product_data.js" type="text/javascript"> //uses get request for the product list</script> 
 <script>
-  //referenced from assignment 1 examples
+  //referenced from assignment 1 examples, add more comments
         let params = (new URL(document.location)).searchParams; //takes data from query called submit_purchase, if it has it then it looks for the quantities// 
         var quantities = [];
         // processing the invoice to create the form from the data entered
@@ -103,5 +103,8 @@ src="./product_data.js" type="text/javascript"> //uses get request for the produ
                   A subtotal $50 - $99.99 will be $5 shipping
                   Subtotals over $100 will be charged 5% of the subtotal amount
               </b> </div>
+              <script>
+                document.write(`Thank you for your order ${params.get('name')}!`);
+              </script>
         </body>
         </html>
