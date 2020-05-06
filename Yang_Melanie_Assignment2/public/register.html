@@ -17,9 +17,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registration Page</title>
+    <style>
+        header{
+            text-align: center;
+            font-size: 50px;
+            margin-bottom: 30px;
+        }
+        form{
+    text-align: center;
+}
+     /* referenced from w3schools website, makes the input boxes centered*/ 
+input[type=text], input[type=password], input[type=email] {
+        text-align: center;
+        font-size: 15px;
+        width: 90%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+        
+    }
+
+input[type=submit] {
+        font-weight: bold;
+        font-size: 40px;
+        color:black;
+        border: none;
+        margin-top: 25px;
+    }
+    </style>
 </head>
 
 <body>
+    <header>
+        Register before your purchase!
+    </header>
     <div>
         <form method="POST" action="process_register" name="Register">
             <input type="text" name="fullname" size="40" pattern="[a-zA-Z]+[ ]+[a-zA-Z]+"
