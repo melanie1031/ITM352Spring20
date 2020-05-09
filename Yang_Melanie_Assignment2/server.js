@@ -1,5 +1,9 @@
-//Creating a server via express//
+var fs = require('fs');
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
+//Creating a server via express//
 var data = require('./public/product_data.js'); //get the data from product_data.js
 var products = data.products;
 
