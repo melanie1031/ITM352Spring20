@@ -44,12 +44,39 @@ input[type=text], input[type=password], input[type=email] {
         color:black;
         margin-top: 25px;
     }
-   </style>
+
+   /* styling the navbar */
+    .topnav {
+      overflow: hidden;
+      background-color: #B4CDCD;
+    }
+    
+    .topnav a {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    /* Changes color on hover*/
+    .topnav a:hover {
+      background-color: #7A8B8B;
+      color: black;
+    }
+    
+    </style>
    
     
 </head>
 
 <body> 
+    <div class="topnav"> 
+        <a class="active" href="./index.html">Home</a>
+        <a href="./Products_display.html">Products</a>
+       
+    
+      </div>
 
     <h1>Ma Belle Jewelry Login Page!</h1>
     <p>To buy my products you must<br> login or register as a member</p>
@@ -59,6 +86,7 @@ input[type=text], input[type=password], input[type=email] {
             <input type="password" name="password" size="40" placeholder="Enter Password" onkeyup="" required><br> 
             
             <input type="submit" value="Login" name="login">
+            
             
         </div>
     </form>
