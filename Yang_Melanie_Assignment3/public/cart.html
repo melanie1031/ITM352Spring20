@@ -26,10 +26,16 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      
+    
+    
       <div class="topnav"> 
-        <a class="active" href="./index.html">Home</a>
-        <a href="./Products_display.html">Products</a>
+        <a class="active" href="./index.html">Home</a> 
+        <a href="./Products_display.html">Products</a> 
+        <a href="./necklaces.html">Necklaces</a>
+        <a href="./bracelets.html">Bracelets</a>
+        <a href="./clips.html">Clips</a>
+        <a href="./earrings.html">Earrings</a>
+        <a href="./rings.html">Rings</a>
         
         <style> /* styling the navbar */
           .topnav {
@@ -76,6 +82,7 @@
                 <th style="text-align: center;" width="54%">Extended price</th>
               </tr>
               <script>
+                //referened from professor Port, so the cart would load the information from the server with the information
                 subtotal = 0
                 for (product_type in products) {
                   if ( typeof cart[product_type] == 'undefined') {
@@ -83,8 +90,8 @@
                   }
                 
                 for (i = 0; i < products[product_type].length; i++) {
-                  console.log(product_type, (cart[product_type][`quantity${i}`]));
-                  }
+                  console.log(product_type, cart[product_type][`quantity${i}`]);
+                  
                   // thus us the quantity 
                   if (cart[product_type][`quantity${i}`] > 0) {
                   // product row
@@ -95,11 +102,15 @@
               <td width="43%">${products[product_type][i].product}</td>
               <td align="center" width="11%">${cart[product_type][`quantity${i}`]}</td>
               <td width="13%">\$${products.product_type[i].price}</td>
+              <td align="center" width="40%">\$${extended_price.toFixed(2)}</td>
+              <td align="center" width="43%"><input type="button" value="Modify Quantity" onclick="ModifyItem()">
+                 <input type="button" value="Remove" onclick="RemoveItem()"></td>
               <td width="54%">\$${extended_price}</td>
             </tr>
             `);
                 
                      }
+                    }
                 }
                
               // Compute tax
@@ -120,11 +131,12 @@
               // Compute grand total
               var total = subtotal + tax + shipping;
 
-
+                //showing the calculations
                  </script>
                   <tr>
                     <td colspan="4" width="100%">&nbsp;</td>
                   </tr>
+                  <tr>
                   <tr>
                     <td style="text-align: center;" colspan="3" width="67%">Sub-total</td>
                     <td width="54%">$<script>document.write(subtotal);</script></td>
@@ -154,7 +166,7 @@
               </script>
         </body>
         <li>
-          <input type="submit" value='Purchase' class="button big" name="purchase_submit_button">
+          <input type="submit" value='Purchase' class="button big" name="purchase_submit_button"> 
       </li>
 
         </html>

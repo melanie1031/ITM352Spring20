@@ -47,8 +47,8 @@ app.get("*/:ptype[.]html", function (request, response, next) {
     str = JSON.stringify(request.session[request.params.ptype]);
   }
   //Used template to load pages from the server, from professor 
-   var pagestring = fs.readFileSync('./displayproducts.tl', 'utf-8');
-   pagestring = `<script> var cart = ${str}; </script>` + pagestring; 
+   var pagestring = fs.readFileSync('./displayproducts.tl', 'utf-8'); 
+   pagestring = `<script> var cart = ${str}; </script>` + pagestring; //so the cart shows in the console
    pagestring = `<script> var product_type = '${request.params.ptype}'; </script>` + pagestring;
    response.send(pagestring);
 });
@@ -92,7 +92,7 @@ app.post("/process_login", function (req, res) {
             return;
            
         } else {
-            LogError.push = ('Invalid Password');
+            LogError.push = ('Invalid Password'); 
   
       console.log(LogError);
       req.query.username= the_username;
@@ -105,13 +105,14 @@ app.post("/process_login", function (req, res) {
         req.query.username= the_username;
         req.query.LogError=LogError.join(';');
     }
-    res.redirect('./login.html?' );
+    res.redirect('./login.html?' ); // if it doesn't work, redirect to login
 });
-// Following Sharon hehe , to load the cart age and then put all the data from the session// 
-app.get("/cart.html", function (req, res) {
-  cartfile = fs.readFileSync('./public/cart.html', 'utf-8');
-  cartfile += `<script> var cart =  ${JSON.stringify(request.session)}</script>`;
+//Allows us to load in the cart page , reference from professor
+app.get("./public/cart.html", function (request, response) {
+  cartfile = fs.statSync('cart.html', 'utf-8');
+  cartfile += `<script> var cart = ${JSON.stringify(request.session)}</script>`;
   response.send(cartfile);
+
 });
 
 //Registration starts here//
@@ -123,7 +124,7 @@ app.post("/process_register", function (req, res) {
     if (/^[A-Za-z]+$/.test(req.body.name)) {
     }
     else {
-      errors.push('Use Letters Only for Full Name')
+      errors.push('Use Letters Only for Full Name') // validating the info put in from now on 
     }
     // validating name
     if (req.body.name == "") {
@@ -158,7 +159,7 @@ app.post("/process_register", function (req, res) {
       errors.push('Password Not a Match')
     }
 
-    if (errors.length == 0) {
+    if (errors.length == 0) { // checking if it is not 0 
        console.log('none');
        req.query.username = reguser;
        req.query.name = req.body.name;
