@@ -1,136 +1,101 @@
+var cookieParser = require('cookie-parser'); //don't forget to install//
+app.use(cookieParser());
+
+var session = require('express-session'); //don't forget to install//
+app.use(session({
+    secret: "ITM352 rocks!"}));  // way to keep it private, encrypt sessions IDs//
+
 var fs = require('fs');
 var express = require('express');
 var app = express();
 var myParser = require("body-parser");
-var session = require('express-session');
-var filename = './user_data.json';
-var quantity_str;
- 
-app.use(session({secret: "ITM352 rocks!"}));
- 
-//When a user gets a request set an ID for the user. Everyone gets a different ID.
-app.get("/use_session", function (request, response){
-   console.log('In GET /use_session' . request.session);
-   var the_sess_is = request.session
-   request.session.destroy();
-   response.send(`welcome, your session ID is <sess id> where ${request.session.id}`)
-  
-   ;
-});
- 
- 
-//When a request it made it tot he server and it has a cookie with that request, this middleware takes that cookie and turns it into an object that can be used.
-var cookieParser = require('cookie-parser');
-app.use(cookieParser());
- 
-app.use(myParser.urlencoded({ extended: true }));
- 
- 
-//Better to use variable because its more flexible for when things change
- 
-if (fs.existsSync(filename)){
-//Checks to see if file exists. Goes to check and returns boolean true if path exists or false. Use sync so that it doesnt go off and do the next thing before doing what you need to do.
- 
-stats = fs.statSync(filename);
-//Allows you to get certain information about your file.
- 
-console.log(filename + ' has ' + stats.size + ' characters');
- 
-data = fs.readFileSync(filename, 'utf-8');
-//Asynchronous by nature, once you call it it goes off and runs on its own. readFileSync reads file, waits till its read, returns back with stuff in file and then continues with code. (Blocking function) Set what you get back to data.
- 
-console.log(typeof data);
-//Read file and saved it as a string.
- 
-users_reg_data = JSON.parse(data);
-//Takes string and converts it into an object.
- 
- 
-//Adds another user to user_reg_data, but its stuck in memory, needs to be saved into file
- 
-username = 'newuser';
-users_reg_data[username] = {};
-users_reg_data[username].username = 'newpass1';
-users_reg_data[username].password = 'newpass';
-users_reg_data[username].email = 'newuser@user.com';
- 
- 
-//Turns it into a JSON string in the file so it can be saved in that file and used again.
-fs.writeFileSync(filename, JSON.stringify(users_reg_data));
- 
-console.log(users_reg_data);
-//As long as usernames are identifiers you can use dot notation. Has to follow identifier rules
+
+var user_info_file = './user_data.json';
+
+if (fs.existsSync(user_info_file)) {
+    var file_stats = fs.statSync(user_info_file);
+
+    var data = fs.readFileSync('./user_data.json', 'utf-8');
+    var userdata = JSON.parse(data);
+    username = 'newuser';
+    userdata[username] = {};
+    userdata[username].password = 'newpass';
+    userdata[username].email = 'newuser@user.com';
+    userdata[username].name = 'The New Guy'
+
+    console.log(userdata["newuser"]["password"]);
+
+    console.log(`${user_info_file} has ${file_stats.size} characters`);
+
 } else {
-   console.log(filename + ' does not exist!');
+    console.log("hey!" + user_info_file + "doesn't exist!")
 }
- 
-//Build cookies key value
+
+app.use(myParser.urlencoded({ extended: true }));
+
+// COOKIE!!!!!!, add a route to get a cookie that may have been set//
 app.get('/set_cookie', function (request, response) {
-response.cookie('myname', 'Ryan', {maxAge: 5000}).send('cookie set');
+console.log('In GET /set_cookie');
+var my_name = 'Melanie';
+response.cookie('your_name', 'my_name',{maxAge: 5*1000}).send('cookie set'); //Sets name = express,  expires in 5* 1000 is 5 sec//
 });
- 
-//If i have a cookie it will call on it
 app.get('/use_cookie', function (request, response) {
-   output = "No cookies with my name"
-   if (typeof request.cookies.myname != "undefined"){
-   output = `Welcome to the used cookie page ${request.cookies.myname}`;
-   response.send(output); }
-   });
- 
- 
-//When we get here we want to have the user registration data already
-//If server gets a GET request to login it will get this code.
- 
+    console.log('In GET /use_cookie' , request.cookies); // requesting a info in the cookie//
+    var the_name = request.cookies["your_name"]; 
+    response.cookie('Welcome to the Use Cookie page' + the_name); // reaching for the cookie, specifically the your_name object//
+    });
+
+    //SESSION!!!!!//
+    app.get('/use_session', function (request, response) {
+        console.log('In GET /use_session' , request.cookies); // if the user doesn't have a session id, then it'll create one, while if they already have hten it will be give in a cookie//
+        var the_sess_id = request.session.id; 
+        response.cookie('Welcome, your session ID is ' + the_sess_id);
+        });
+
+
+
 app.get("/login", function (request, response) {
-   console.log(request.query); //print out query//
-if (typeof request.cookies['username'] != 'undefined') {
-   str = `Welcome ${request.cookies['username']}!`;
-} else {
- 
-   quantity_str = request.query;
-   // Give a simple login form
-   str = `
+    // Give a simple login form
+    str = `
 <body>
-<h1>Hello ${session.username} ! You last logged in on ${session.last_login_time}</h1>
-<form action="" method="POST">
+<form action="/check_login?quantity=999" method="POST">
 <input type="text" name="username" size="40" placeholder="enter username" ><br />
 <input type="password" name="password" size="40" placeholder="enter password"><br />
 <input type="submit" value="Submit" id="submit">
 </form>
+<a href = "./register">New User Register</a>
 </body>
-   `;
-   response.send(str);
-};
- 
-app.post("/login", function (request, response) {
-   // Process login form POST and redirect to logged in page if ok, back to login page if not
-   console.log(request.body);
-   //Diagnostic
-   the_username = request.body.username;
-   if (typeof users_reg_data[the_username] != 'undefined') {
-       //Asking object if it has matching username, if it doesnt itll be undefined.
-       if (users_reg_data[the_username].password == request.body.password) {
-           response.send(the_username + " Logged In!");
-       } else {
-           session.username = login_username
-           var theDate = Date.now();
-           session.last_login_time = theDateString();
-       }
-           //Redirect them to invoice here if they logged in correctly
-       } else {
-response.redirect('/login');
-       }
-       //See's if password matches what was typed
-   }
-);
- 
-//Creates registration form
- 
+    `;
+    response.send(str);
+});
+
+app.post("/check_login", function (request, response) {
+    // Process login form POST and redirect to logged in page if ok, back to login page if not
+    console.log(request.query);
+    var err_str = "";
+    var login_username = request.body["username"];
+    //Check if username exits in reg data. If so, check if password matches
+    if (typeof userdata[login_username] != 'undefined') {
+        var user_info = userdata[login_username];
+        // Check if password stored for username matches what user typed in
+        if (user_info["password"] != request.body["password"]) {
+            err_str = `bad_password`;
+        } else {
+            response.end(`${login_username} is logged in with data ${JSON.stringify(request.query)}`);
+            return;
+        }
+
+    } else {
+        err_str = `bad_username`;
+    }
+    response.redirect(`./login?username} = ${login_username} &error = ${err_str}`);
+});
+
 app.get("/register", function (request, response) {
-   // Give a simple register form
-   str = `
+    // Give a simple register form
+    str = `
 <body>
-<form action="" method="POST">
+<form action="/register_user" method="POST">
 <input type="text" name="username" size="40" placeholder="enter username" ><br />
 <input type="password" name="password" size="40" placeholder="enter password"><br />
 <input type="password" name="repeat_password" size="40" placeholder="enter password again"><br />
@@ -138,42 +103,39 @@ app.get("/register", function (request, response) {
 <input type="submit" value="Submit" id="submit">
 </form>
 </body>
-   `;
-   response.send(str);
+    `;
+    response.send(str);
+
 });
- 
-app.post("/register", function (request, response) {
-   // process a simple register form
- 
-   //Validate: User must not exist already, case sensitive,password certain length with certain characters, email is email
- 
-   //Save new user to file name (users_reg_data)
-   username = request.body.username;
-  
-   //Checks to see if username already exists
-   errors = [];
-   //If array stays empty move on
-if (typeof users_reg_data[username] != 'undefined'){
-errors.push("Username is Taken");
-}
-console.log(errors, users_reg_data);
-if (errors.length == 0){
-   users_reg_data[username] = {};
-   users_reg_data[username].password = request.body.password;
-   users_reg_data[username].email = request.body.email;
- 
-   fs.writeFileSync(filename, JSON.stringify(users_reg_data));
-  
-   response.redirect("/login");
+
+app.post("/register_user", function (request, response) {
+    // process a simple register form
+console.log(request.body);
+username = request.body.username;
+errs = [];
+//Check if username is taken
+if(typeof userdata[username] != 'undefined') {
+    errs.push ("username taken");
 } else {
-   response.redirect("/register");
+    userdata[username] = {};
 }
-  
+// Is password same as repeat password 
+if(request["body"] ["password"] != request ["body"] ["repeat_password"]) {
+    errs.push ("passwords don't match");
+} else {
+    userdata[username].password = request["body"] ["password"];
+}
+
+userdata[username] = {};
+userdata[username].password = request.body.password;
+userdata[username].email = request.body.email
+
+if (errs.length ==0) {
+    fs.writeFileSync(user_info_file,JSON.stringify(userdata));
+response.end(`New user ${username} registered!`);
+} else {
+    response.end(JSON.stringify(errs));
+}
 });
- 
- 
- 
-app.listen(8080, () => console.log(`listening on port 8080`));
- 
-//JSON DATA: You get all these properties that are usernames stored with all the information that corresponds with the username, convienent for saving and using user info. Dont need to search, just ask for username and have acess to all data, easy to add new object. Data stored as text in a file. Load it in and turn it into a JSON object that js can use.
-//Login processing has to be done on server because the server is the only one that can read the file//
+
+app.listen(8080, () => console.log(`listening on port 8080`))

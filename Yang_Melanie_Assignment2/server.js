@@ -1,9 +1,5 @@
-var fs = require('fs');
-var session = require('express-session');
-var cookieParser = require('cookie-parser');
-app.use(cookieParser());
-
 //Creating a server via express//
+
 var data = require('./public/product_data.js'); //get the data from product_data.js
 var products = data.products;
 
@@ -47,7 +43,7 @@ app.post("/process_login", function (req, res) {
             req.query.username = the_username;
             console.log(users_reg_data[req.query.username].name);
             req.query.name = users_reg_data[req.query.username].name
-            res.redirect('/invoice.html?' + queryString.stringify(req.query));
+            res.redirect('/Invoice.html?' + queryString.stringify(req.query));
             return;
             //Redirect them to invoice here if they logged in correctly//
         } else {
@@ -113,7 +109,7 @@ app.post("/process_register", function (req, res) {
        console.log('none');
        req.query.username = reguser;
        req.query.name = req.body.name;
-       res.redirect('/invoice.html?' + queryString.stringify(req.query))
+       res.redirect('/Invoice.html?' + queryString.stringify(req.query))
     }
     if (errors.length > 0) {
         console.log(errors)

@@ -3,7 +3,7 @@ app.use(cookieParser());
 
 var session = require('express-session'); //don't forget to install//
 app.use(session({
-    secret: "ITM352 rocks!"}));  // way to keep it private//})); 
+    secret: "ITM352 rocks!"}));  // way to keep it private, encrypt sessions IDs//
 
 var fs = require('fs');
 var express = require('express');
@@ -33,7 +33,7 @@ if (fs.existsSync(user_info_file)) {
 
 app.use(myParser.urlencoded({ extended: true }));
 
-// COOKIE, add a route to get a cookie that may have been set//
+// COOKIE!!!!!!, add a route to get a cookie that may have been set//
 app.get('/set_cookie', function (request, response) {
 console.log('In GET /set_cookie');
 var my_name = 'Melanie';
@@ -47,17 +47,21 @@ app.get('/use_cookie', function (request, response) {
 
     //SESSION!!!!!//
     app.get('/use_session', function (request, response) {
-        console.log('In GET /use_session' , request.cookies); // if the user doesn't have a session id, then it'll create one, while if they already have hten it will be give in a cookie//
+        console.log('In GET /use_session' , request.session); // if the user doesn't have a session id, then it'll create one, while if they already have hten it will be give in a cookie//
         var the_sess_id = request.session.id; 
         response.cookie('Welcome, your session ID is ' + the_sess_id);
         });
 
 
+
 app.get("/login", function (request, response) {
-    // Give a simple login form
+    console.log(request.query); // print out query//
+    quantity_str = request.query;
+    // Give a simple login form, should also have some if statements, that unless this happens, then show the last time you logged in//
     str = `
 <body>
-<form action="/check_login?quantity=999" method="POST">
+>h1>Hello ${session.username}! You last logged in on ${session.last_login_time}</h1> 
+<form action="/check_login" method="POST">
 <input type="text" name="username" size="40" placeholder="enter username" ><br />
 <input type="password" name="password" size="40" placeholder="enter password"><br />
 <input type="submit" value="Submit" id="submit">
@@ -79,8 +83,13 @@ app.post("/check_login", function (request, response) {
         // Check if password stored for username matches what user typed in
         if (user_info["password"] != request.body["password"]) {
             err_str = `bad_password`;
+            // when they successfully login, they start a session//
         } else {
-            response.end(`${login_username} is logged in with data ${JSON.stringify(request.query)}`);
+            session.username = login_username;
+            var msg = `You last logged in on ${request.session.last_login}`;
+            var theDate = Date.now();
+            session.last_login_time = theDate; // use sesion to keep products data between pages// 
+            response.end(`${login_username} is logged in with data ${JSON.stringify(request.query)} on ${theDate}`);
             return;
         }
 

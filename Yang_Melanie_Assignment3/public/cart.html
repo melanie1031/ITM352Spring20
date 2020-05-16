@@ -1,0 +1,208 @@
+
+<script>
+    var subtotal = 0;
+ 
+ // Get the query string values from form submission
+ let params = (new URL(document.location)).searchParams;
+ var quantity = [""];
+
+ //Turns the query string values into var values
+ for (var i = 0; i < quantity[product_type].length; i++) {
+   quantity[product_type][i] = params.get("quantity" + i);
+
+if (quantity[product_type][i] == null || quantity[product_type] [i].length == 0 ) {
+  quantity[product_type] [i] ='0'
+}
+
+ }
+        </script>  
+
+
+<script>
+  // Check browser support
+if (typeof(Storage) !== "undefined") {
+  // Store
+  sessionStorage.setItem("lastname", "Smith");
+  // Retrieve
+  document.getElementById("result").innerHTML = sessionStorage.getItem("lastname");
+} else {
+  document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+}
+   
+  
+ 
+
+</script>
+<script>
+
+   
+        var services_array = {}
+        for (i = 0; i < services_array.length; i++) { //for any given product
+
+            if (params.has(`quantity_textbox${i}`)) { // if there is input in the quantity_textbox...
+                qty = params.get(`quantity_textbox${i}`); //get the information and put it into the variable 'qty'
+                quantities[i] = qty; //set variable 'quantities' for any given product equal to the value of its corresponding quantity_textbox
+            }
+
+        };
+
+   /* } else {
+        window.location.href = './index.html'; // if there is nothing entered in any of the textboxes, send the user back to the index.html page to select products amounts
+        alert('Please re-select your productss and login again'); //notice to re-enter products amounts
+   */
+
+    if (params.has('username')) { //if query string has info about user...
+        var name = params.get('name'); //get the name of the user and assign it to var 'name'
+        var username = params.get('username'); //get the user's username from the query string and assign it to var 'username'
+    }
+
+</script>
+
+<!-- Copied from order_page_Ex4.html in Lab13 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Nav bar at the top to go back to home and products page-->
+    <div class="topnav"> 
+        <a class="active" href="./index.html">Home</a>
+        <a href="./Products_display.html">Products</a>
+        
+        
+    <title>Shopping Cart</title>
+    
+</head>
+
+<header align="center">
+    <!-- Center header on page -->
+    <h1 >Shopping Cart</h1>
+    <link href="invoice_style.css" rel="stylesheet">
+    <hr /> <!-- Title of page -->
+</header>
+
+<body>
+    
+
+    <script> // Above the invoice, thank the user personally by his/her name
+
+        if (name != 'undefined' && name != '') {
+
+            document.write(`
+                <h3 align="center">Hello, ${name}!<br />Please review your order below</h3><br />
+            `)
+
+        } else {
+
+            document.write(`
+                <h3 align="center">Hello, ${username}!<br />Please review your order below</h3><br />
+            `)
+
+        }
+
+    </script>
+    <table align="center" border=2>
+
+
+            <script> subtotal = 0 //calculating the subtotal// 
+                for (i = 0; i < products.length; i++) {
+                  if (quantities[i] > 0) {
+                  // product row
+                  extended_price = quantities[i] * products[i].price
+                  subtotal += extended_price;
+                  document.write(`
+            <tr>
+              <td width="43%">${products[i].product}</td>
+              <td align="center" width="11%">${quantities[i]}</td>
+              <td width="13%">\$${products[i].price}</td>
+              <td width="54%">\$${extended_price}</td>
+            </tr>
+            `);
+                }
+               }
+              // Compute tax
+              var tax_rate = 0.0575;
+              var tax = tax_rate * subtotal;
+      
+              // Compute shipping
+              if (subtotal <= 50) {
+                shipping = 2;
+              }
+              else if (subtotal <= 100) {
+                shipping = 5;
+              }
+              else {
+                shipping = 0.05 * subtotal; // 5% of subtotal
+              }
+      
+              // Compute grand total
+              var total = subtotal + tax + shipping;
+
+                
+                 </script> <!-- To make the table, inclusing the subtotal, tax, shipping and total-->
+                 <tr>
+                  <!-- This row contains the column headers-->
+                  <th style="text-align: center;" width="43%">
+                      <h3>products</h3>
+                  </th>
+  
+                  <th style="text-align: center;" width="11%">
+                      <h3>quantity</h3>
+                  </th>
+  
+                  <th style="text-align: center;" width="40%">
+                      <h3>price per unit</h3>
+                  </th>
+  
+                  <th style="text-align: center;" width="30%">
+                      <h3>extended price</h3>
+                  </th>
+
+              </tr>
+                  <tr>
+                    <td colspan="4" width="100%">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;" colspan="3" width="67%">Sub-total</td>
+                    <td width="54%">$<script>document.write(subtotal);</script></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Tax @ <script>document.write(100*tax_rate);</script>%</span></td>
+                    <td width="54%">$<script>document.write(tax.toFixed(2));</script></td>
+                  </tr>
+                  <tr>
+                      <td style="text-align: center;" colspan="3" width="67%">Shipping</span></td>
+                      <td width="54%">$<script>document.write(shipping.toFixed(2));</script></td>
+                    </tr>
+                  <tr>
+                    <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
+                    <td width="54%"><strong>$<script>document.write(total.toFixed(2));</script></strong></td>
+                  </tr>
+                </tbody>
+              </table>   
+
+</body>
+
+    <!-- 
+        Purchase button that will redirect to invoice
+        The following purchase button was copied from Lexy Dennis' Assignment 1 index.html page
+    -->
+    <ul class="actions" align="center">
+        <li>
+            <input type="submit" value='Purchase' class="button big" name="purchase_submit_button">
+        </li>
+    </ul>
+
+</html>
+
+</div>
+<div>
+   
+</div>
+</section>
+ 
+   <footer>
+   
+   </footer>
