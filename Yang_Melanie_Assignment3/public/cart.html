@@ -1,127 +1,107 @@
-
 <script>
-    var subtotal = 0;
- 
- // Get the query string values from form submission
- let params = (new URL(document.location)).searchParams;
- var quantity = [""];
-
- //Turns the query string values into var values
- for (var i = 0; i < quantity[product_type].length; i++) {
-   quantity[product_type][i] = params.get("quantity" + i);
-
-if (quantity[product_type][i] == null || quantity[product_type] [i].length == 0 ) {
-  quantity[product_type] [i] ='0'
-}
-
- }
-        </script>  
-
-
+//src="./product_data.js" type="text/javascript"> //uses get request for the product list</script> 
 <script>
-  // Check browser support
-if (typeof(Storage) !== "undefined") {
-  // Store
-  sessionStorage.setItem("lastname", "Smith");
-  // Retrieve
-  document.getElementById("result").innerHTML = sessionStorage.getItem("lastname");
-} else {
-  document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
-}
-   
-  
- 
-
-</script>
-<script>
-
-   
-        var services_array = {}
-        for (i = 0; i < services_array.length; i++) { //for any given product
-
-            if (params.has(`quantity_textbox${i}`)) { // if there is input in the quantity_textbox...
-                qty = params.get(`quantity_textbox${i}`); //get the information and put it into the variable 'qty'
-                quantities[i] = qty; //set variable 'quantities' for any given product equal to the value of its corresponding quantity_textbox
+  //referenced from assignment 1 examples, add more comments
+        let params = (new URL(document.location)).searchParams; //takes data from query called submit_purchase, if it has it then it looks for the quantities// 
+        var quantities = [];
+        // processing the invoice to create the form from the data entered
+        if (params.has('submitPurchase')) { // loop that pulls information//
+          for (i = 0; i < products[product_type].length; i++) {
+            if (params.has(`quantity${i}`)) {
+              a_qty = params.get(`quantity${i}`);
+              quantities[i] = a_qty; 
             }
+          }
 
-        };
+        } else {
+          document.write('Please enter a valid quantity!');
+        }
+        console.log(quantities);
+      </script>  
 
-   /* } else {
-        window.location.href = './index.html'; // if there is nothing entered in any of the textboxes, send the user back to the index.html page to select products amounts
-        alert('Please re-select your productss and login again'); //notice to re-enter products amounts
-   */
-
-    if (params.has('username')) { //if query string has info about user...
-        var name = params.get('name'); //get the name of the user and assign it to var 'name'
-        var username = params.get('username'); //get the user's username from the query string and assign it to var 'username'
-    }
-
-</script>
-
-<!-- Copied from order_page_Ex4.html in Lab13 -->
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Nav bar at the top to go back to home and products page-->
-    <div class="topnav"> 
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      
+      <div class="topnav"> 
         <a class="active" href="./index.html">Home</a>
         <a href="./Products_display.html">Products</a>
         
+        <style> /* styling the navbar */
+          .topnav {
+            overflow: hidden;
+            background-color: #B4CDCD;
+          }
+          
+          .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+          }
+          /* Changes color on hover*/
+          .topnav a:hover {
+            background-color: #7A8B8B;
+            color: black;
+          }
+          
+          </style>
         
-    <title>Shopping Cart</title>
     
-</head>
-
-<header align="center">
-    <!-- Center header on page -->
-    <h1 >Shopping Cart</h1>
-    <link href="invoice_style.css" rel="stylesheet">
-    <hr /> <!-- Title of page -->
-</header>
-
-<body>
+      </div>
+      <title>Invoice</title>
+      <h1>Welcome to your Shopping Cart!</h1>
+      <link href="invoice_style.css" rel="stylesheet">
+   
+      
+      
+    </head>
+  
+    <body>
+      
     
-
-    <script> // Above the invoice, thank the user personally by his/her name
-
-        if (name != 'undefined' && name != '') {
-
-            document.write(`
-                <h3 align="center">Hello, ${name}!<br />Please review your order below</h3><br />
-            `)
-
-        } else {
-
-            document.write(`
-                <h3 align="center">Hello, ${username}!<br />Please review your order below</h3><br />
-            `)
-
-        }
-
-    </script>
-    <table align="center" border=2>
-
-
-            <script> subtotal = 0 //calculating the subtotal// 
-                for (i = 0; i < products.length; i++) {
-                  if (quantities[i] > 0) {
+      </div>
+        <table border="1">
+          <tbody>
+              <tr>
+                <th style="text-align: center;" width="43%">Item</th>
+                <th style="text-align: center;" width="11%">Quantity</th>
+                <th style="text-align: center;" width="13%">Price</th>
+                <th style="text-align: center;" width="54%">Extended price</th>
+              </tr>
+              <script>
+                subtotal = 0
+                for (product_type in products) {
+                  if ( typeof cart[product_type] == 'undefined') {
+                      continue;
+                  }
+                
+                for (i = 0; i < products[product_type].length; i++) {
+                  console.log(product_type, (cart[product_type][`quantity${i}`]));
+                  }
+                  // thus us the quantity 
+                  if (cart[product_type][`quantity${i}`] > 0) {
                   // product row
-                  extended_price = quantities[i] * products[i].price
+                  extended_price = cart[product_type][`quantity${i}`] * products[product_type][i].price
                   subtotal += extended_price;
                   document.write(`
             <tr>
-              <td width="43%">${products[i].product}</td>
-              <td align="center" width="11%">${quantities[i]}</td>
-              <td width="13%">\$${products[i].price}</td>
+              <td width="43%">${products[product_type][i].product}</td>
+              <td align="center" width="11%">${cart[product_type][`quantity${i}`]}</td>
+              <td width="13%">\$${products.product_type[i].price}</td>
               <td width="54%">\$${extended_price}</td>
             </tr>
             `);
+                
+                     }
                 }
-               }
+               
               // Compute tax
               var tax_rate = 0.0575;
               var tax = tax_rate * subtotal;
@@ -140,27 +120,8 @@ if (typeof(Storage) !== "undefined") {
               // Compute grand total
               var total = subtotal + tax + shipping;
 
-                
-                 </script> <!-- To make the table, inclusing the subtotal, tax, shipping and total-->
-                 <tr>
-                  <!-- This row contains the column headers-->
-                  <th style="text-align: center;" width="43%">
-                      <h3>products</h3>
-                  </th>
-  
-                  <th style="text-align: center;" width="11%">
-                      <h3>quantity</h3>
-                  </th>
-  
-                  <th style="text-align: center;" width="40%">
-                      <h3>price per unit</h3>
-                  </th>
-  
-                  <th style="text-align: center;" width="30%">
-                      <h3>extended price</h3>
-                  </th>
 
-              </tr>
+                 </script>
                   <tr>
                     <td colspan="4" width="100%">&nbsp;</td>
                   </tr>
@@ -182,27 +143,18 @@ if (typeof(Storage) !== "undefined") {
                   </tr>
                 </tbody>
               </table>   
-
-</body>
-
-    <!-- 
-        Purchase button that will redirect to invoice
-        The following purchase button was copied from Lexy Dennis' Assignment 1 index.html page
-    -->
-    <ul class="actions" align="center">
+              <div>
+                <br><b>
+                  OUR SHIPPING POLICY IS:A subtotal $0 - $49.99 will be $2 shipping
+                  A subtotal $50 - $99.99 will be $5 shipping
+                  Subtotals over $100 will be charged 5% of the subtotal amount
+              </b> </div>
+              <script>
+                document.write(`Thank you for your order ${params.get('name')}!`); // used to personalize the invoice//
+              </script>
+        </body>
         <li>
-            <input type="submit" value='Purchase' class="button big" name="purchase_submit_button">
-        </li>
-    </ul>
+          <input type="submit" value='Purchase' class="button big" name="purchase_submit_button">
+      </li>
 
-</html>
-
-</div>
-<div>
-   
-</div>
-</section>
- 
-   <footer>
-   
-   </footer>
+        </html>

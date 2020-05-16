@@ -1,3 +1,5 @@
+// Name: Melanie Yang 
+// Description: server processing for online shop
 
 //Creating a server via express//
 var data = require('./public/product_data.js'); //get the data from product_data.js
@@ -32,22 +34,25 @@ app.all('*', function (request, response, next) {
     console.log(request.method + ' to ' + request.path)
     next();
 });
-
+// Gennerates each page where there is a product
 app.get("*/:ptype[.]html", function (request, response, next) {
   if (typeof products[request.params.ptype] == 'undefined')
   {
     next();
     return;
   }
+  // Referenced from professor Port // 
   str = '{}'; 
   if( typeof request.session[request.params.ptype] != 'undefined') {
     str = JSON.stringify(request.session[request.params.ptype]);
   }
+  //Used template to load pages from the server, from professor 
    var pagestring = fs.readFileSync('./displayproducts.tl', 'utf-8');
-   pagestring = `<script> var cart = ${str}; </script>` + pagestring;
+   pagestring = `<script> var cart = ${str}; </script>` + pagestring; 
    pagestring = `<script> var product_type = '${request.params.ptype}'; </script>` + pagestring;
    response.send(pagestring);
 });
+
 
 app.use(myParser.urlencoded({ extended: true })); //get data in the body//
 //to process the response from what is typed in the form//
@@ -68,7 +73,7 @@ app.post("/process_login", function (req, res) {
                 msg = '';
                 if (typeof request.session.last_login != 'undefined') { 
                   var msg = `You last logged in on ${request.session.last_login}`;
-                  var now = new Date();
+                  var now = new Date(); //Supposed to shoe last login time, referenced from lab 15
                 } else {
                   now = 'first login'; 
                 }
@@ -101,6 +106,12 @@ app.post("/process_login", function (req, res) {
         req.query.LogError=LogError.join(';');
     }
     res.redirect('./login.html?' );
+});
+// Following Sharon hehe , to load the cart age and then put all the data from the session// 
+app.get("/cart.html", function (req, res) {
+  cartfile = fs.readFileSync('./public/cart.html', 'utf-8');
+  cartfile += `<script> var cart =  ${JSON.stringify(request.session)}</script>`;
+  response.send(cartfile);
 });
 
 //Registration starts here//
@@ -192,7 +203,10 @@ app.post("/process_cart", function (request, response) {
         else {response.send('Enter a valid quantity!')} // To let them know if wasn't a valid quantity
     
     }
-});
+}); 
+
+
+
 
 function isNonNegInt(q, returnErrors = false) {
     errors = []; // assume that quantity data is valid 
