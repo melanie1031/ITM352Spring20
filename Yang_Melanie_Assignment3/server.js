@@ -154,7 +154,8 @@ app.post("/process_register", function (req, res) {
        console.log('none');
        req.query.username = reguser;
        req.query.name = req.body.name;
-       res.redirect('/cart.html?' + queryString.stringify(req.query)) // after done, direct to cart//
+       res.redirect('/index.html?')
+       //+ queryString.stringify(req.query)) // after done, direct to cart//
     }
     if (errors.length > 0) {
         console.log(errors)
