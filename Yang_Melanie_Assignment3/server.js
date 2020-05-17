@@ -65,30 +65,21 @@ app.post("/process_login", function (req, res) {
     if (typeof users_reg_data[the_username] != 'undefined') {
         //Asking object if it has matching username, if it doesnt itll be undefined.
         if (users_reg_data[the_username].password == req.body.password) {
-            the_username = request.body.username;
+            the_username = req.body.username;
             //If username given is not undefined (checks if it ecists)
             if (typeof users_reg_data[the_username] != 'undefined') {
               //then get the password from the json data, and check if it is the same as password entered
-              if (users_reg_data[username.password] == request.body.password) { // following taken from lab 15//
-                msg = '';
-                if (typeof request.session.last_login != 'undefined') { 
-                  var msg = `You last logged in on ${request.session.last_login}`;
-                  var now = new Date(); //Supposed to shoe last login time, referenced from lab 15
-                } else {
-                  now = 'first login'; 
-                }
-                request.session.last_login = now;
-                response 
-                .cookie('username', the_username, )
-                .send(`${the_username} last logged in ${now}`);
-              } else {
+              if (users_reg_data[the_username].password == req.body.password) { 
+               res.redirect('./index.html');
+              } 
+              else {
                 response.redirect('./login.html');
               }
             }
             //Redirect to cart if they logged in correctly
             console.log(users_reg_data[req.query.username].name); 
             req.query.name = users_reg_data[req.query.username].name
-            res.redirect('/cart.html?' + queryString.stringify(req.query));
+            res.redirect('/invoice.html?' + queryString.stringify(req.query));
             return;
            
         } else {
@@ -108,9 +99,9 @@ app.post("/process_login", function (req, res) {
     res.redirect('./login.html?' ); // if it doesn't work, redirect to login
 });
 //Allows us to load in the cart page , reference from professor
-app.get("./public/cart.html", function (request, response) {
-  cartfile = fs.statSync('cart.html', 'utf-8');
-  cartfile += `<script> var cart = ${JSON.stringify(request.session)}</script>`;
+app.get("/cart.html", function (request, response) {
+  cartfile = `<script> var cart = ${JSON.stringify(request.session)}</script>`;
+  cartfile += fs.readFileSync('./public/cart.html', 'utf-8');
   response.send(cartfile);
 
 });
