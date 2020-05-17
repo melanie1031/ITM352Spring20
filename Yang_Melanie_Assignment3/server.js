@@ -101,7 +101,7 @@ app.post("/process_login", function (req, res) {
 //Allows us to load in the cart page , reference from professor
 app.get("/cart.html", function (request, response) {
   cartfile = `<script> var cart = ${JSON.stringify(request.session)}</script>`;
-  cartfile += fs.readFileSync('./public/cart.html', 'utf-8');
+  cartfile += fs.readFileSync('./public/cart.html', 'utf-8'); // add it onto the cart page which is in public
   response.send(cartfile);
 
 });
